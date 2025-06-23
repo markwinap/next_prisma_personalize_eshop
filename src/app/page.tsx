@@ -51,7 +51,7 @@ export default async function Home() {
 
             <div className={styles.authContainer}>
               <p className={styles.showcaseText}>
-                {session && <span>Logged in as {session.user?.name}</span>}
+                {session && <span>Logged in as {session.user?.email}</span>}
               </p>
               <Link
                 href={session ? "/api/auth/signout" : "/api/auth/signin"}

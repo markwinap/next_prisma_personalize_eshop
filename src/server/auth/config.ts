@@ -1,6 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import CognitoProvider from "next-auth/providers/cognito";
+import { env } from "~/env";
 
 import { db } from "~/server/db";
 
@@ -32,7 +33,16 @@ declare module "next-auth" {
  */
 export const authConfig = {
   providers: [
-    DiscordProvider,
+    CognitoProvider({
+      clientId: env.COGNITO_CLIENT_ID,
+      clientSecret: env.COGNITO_CLIENT_SECRET,
+      issuer: env.COGNITO_ISSUER,
+      authorization: {
+        params: {
+          scope: "openid",
+        },
+      },
+    })
     /**
      * ...add more providers here.
      *

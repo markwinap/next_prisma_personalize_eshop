@@ -72,3 +72,55 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+
+// Custom
+model Yatch {
+    id        String    @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    year      Int
+    capacity   Int
+
+    Destination Destination[]
+
+    Dinning Dinning[]
+}
+
+model Destination {
+    id        String    @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    voyageType   String
+    voyageRegion String
+    voyageStartDate DateTime
+    voyageEndDate DateTime
+    voyageEmbarkPort String
+    voyageDisembarkPort String
+    embarkationCountry String
+    disEmbarkationCountry String
+    nights Int
+    startingPrice Float
+    ports String[]
+    yatchId   String
+    yatch     Yatch     @relation(fields: [yatchId], references: [id], onDelete: Cascade)
+}
+
+model Dinning {
+    id        String    @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String
+    location   String
+    cusineType String
+    reservationRequired Boolean
+    bar Boolean
+    breakfast Boolean
+    lunch Boolean
+    dinner Boolean
+
+    yatchId   String
+    yatch     Yatch     @relation(fields: [yatchId], references: [id], onDelete: Cascade)
+}
