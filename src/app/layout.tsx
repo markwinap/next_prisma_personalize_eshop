@@ -4,6 +4,13 @@ import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { useSession, SessionProvider } from 'next-auth/react';
+
+// ANT
+
+import { AntdRegistry } from '@ant-design/nextjs-registry';
+
+
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -17,11 +24,20 @@ const geist = Geist({
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  session
+}: Readonly<{ children: React.ReactNode, session: never }>) {
+
   return (
-    <html lang="en">
-      <body className={geist.className}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+    <html lang="en"
+    >
+      <body >
+        <AntdRegistry>
+            <SessionProvider session={session}>
+              <TRPCReactProvider>
+            {children}
+            </TRPCReactProvider>
+            </SessionProvider>
+        </AntdRegistry>
       </body>
     </html>
   );

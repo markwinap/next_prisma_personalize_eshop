@@ -1,0 +1,67 @@
+{
+    "type": "record",
+    "name": "Items",
+    "namespace": "com.amazonaws.personalize.schema",
+    "fields": [
+        {
+            "name": "ITEM_ID",
+            "type": "string"
+        },
+        {
+            "name": "NAME",
+            "type": "string"
+        },
+        {
+            "name": "CATEGORY_L1",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L2",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L3",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L4",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L5",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L6",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "CATEGORY_L7",
+            "type": "string",
+            "categorical": true
+        },
+        {
+            "name": "VOYAGE_NIGHTS",
+            "type": "int"
+        },
+        {
+            "name": "PRICE",
+            "type": "float"
+        },
+        {
+            "name": "VOYAGE_START_DATE",
+            "type": "long"
+        },
+        {
+            "name": "VOYAGE_END_DATE",
+            "type": "long"
+        }
+    ],
+    "version": "1.0"
+}
