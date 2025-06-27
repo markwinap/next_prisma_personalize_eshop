@@ -269,310 +269,265 @@ export default function Destination({ params }: { params: Promise<{ id: string }
 
     return (
         <>
-            <Layout style={{ height: '100%' }}>
-                <Header
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        background: '#001529',
-                        padding: '0 24px',
-                    }}
-                >
-                    {/* Logo Section */}
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src="/logo192.png" alt="Logo" style={{ height: 32, marginRight: 12 }} />
-                        <Text style={{ color: '#fff', fontSize: 18 }}>AWS Personalize</Text>
-                    </div>
+            <Breadcrumb
+                style={{ margin: '16px 0' }}
+                items={[
+                    {
+                        title: <Text
+                            onClick={() => { void router.push(`/`) }}
+                            style={{ cursor: 'pointer' }}
+                        >Yatchs</Text>
+                    },
+                    { title: yatchData?.name ?? 'Yatch' },
+                    { title: 'Destinations' },
+                ]}
+            />
+            <Row gutter={[16, 16]}>
 
-                    {/* User Info + Logout */}
-                    <Space align="center">
-                        <Avatar icon={<UserOutlined />} />
-                        <Text style={{ color: '#fff' }}>{sessionData?.user.email}</Text>
-                        <Button
-                            type="primary"
-                            icon={<LogoutOutlined />}
-                            onClick={() => {
-                                console.log('Logout clicked');
-                                router.push(sessionData ? '/api/auth/signout' : '/api/auth/signin');
-                            }}
-                        >
-                            {
-                                sessionData ? 'Logout' : 'Login'
-                            }
-                        </Button>
-                    </Space>
-                </Header>
-                <Content style={{ padding: '0 48px', height: '100%' }}>
-                    <Breadcrumb
-                        style={{ margin: '16px 0' }}
-                        items={[
-                            { title: 'Home' },
-                            {
-                                title: <Text
-                                    onClick={() => { void router.push(`/`) }}
-                                    style={{ cursor: 'pointer' }}
-                                >Yatchs</Text>
-                            },
-                            { title: yatchData?.name ?? 'Yatch' },
-                            { title: 'Destinations' },
-                        ]}
-                    />
-                    <Layout
-                        // style={{ padding: '24px 0', background: colorBgContainer, borderRadius: borderRadiusLG }}
-                        style={{ padding: '24px 0', borderRadius: borderRadiusLG }}
-                    >
-                        <Row gutter={[16, 16]}>
-
-                            <Col span={24} >
-                                <Typography.Title level={4} style={{ margin: 0 }}>
-                                    For You
-                                </Typography.Title>
-                            </Col>
-
-                            {
-                                forYou?.map((destinationId, index) => {
-                                    const destination = data?.find(dest => dest.id === destinationId);
-                                    if (!destination) return null; // Skip if destination not found
-                                    return (
-                                        <Col span={6} key={index} style={{ padding: '0 12px' }}>
-                                            <Card title={<Button
-                                                type="text"
-                                                block
-                                                onClick={() => {
-                                                    // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
-                                                    void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
-                                                        console.error('Error putting event:', error);
-                                                    }).then(() => {
-                                                        router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                                    })
-                                                    // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                                }}
-                                            >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
-                                                <Row gutter={16}>
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Region
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.voyageRegion}
-                                                    </Col>
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Nigths
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.nights}
-                                                    </Col>
-
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Starting Price
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.startingPrice}
-                                                    </Col>
-
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Embarkation Country
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.embarkationCountry}
-                                                    </Col>
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Disembarkation Country
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.disEmbarkationCountry}
-                                                    </Col>
-                                                </Row>
-                                            </Card>
+                <Col span={24} >
+                    <Typography.Title level={4} style={{ margin: 0 }}>
+                        For You
+                    </Typography.Title>
+                </Col>
+                {
+                    forYou?.map((destinationId, index) => {
+                        const destination = data?.find(dest => dest.id === destinationId);
+                        if (!destination) return null; // Skip if destination not found
+                        return (
+                            <Col span={6} key={index} style={{ padding: '0 12px' }}>
+                                <Card title={<Button
+                                    type="text"
+                                    block
+                                    onClick={() => {
+                                        // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
+                                        void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
+                                            console.error('Error putting event:', error);
+                                        }).then(() => {
+                                            router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                        })
+                                        // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                    }}
+                                >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
+                                    <Row gutter={16}>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Region
+                                            </Typography.Title>
                                         </Col>
-                                    )
-                                })
-                            }
-
-
-                            <Col span={24} >
-                                <Typography.Title level={4} style={{ margin: 0 }}>
-                                    Most Viewed
-                                </Typography.Title>
-                            </Col>
-
-                            {
-                                mostViewed?.map((destinationId, index) => {
-                                    const destination = data?.find(dest => dest.id === destinationId);
-                                    if (!destination) return null; // Skip if destination not found
-                                    return (
-                                        <Col span={6} key={index} style={{ padding: '0 12px' }}>
-                                            <Card title={<Button
-                                                type="text"
-                                                block
-                                                onClick={() => {
-                                                    // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
-                                                    void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
-                                                        console.error('Error putting event:', error);
-                                                    }).then(() => {
-                                                        router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                                    })
-                                                    // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                                }}
-                                            >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
-                                                <Row gutter={16}>
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Region
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.voyageRegion}
-                                                    </Col>
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Nigths
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.nights}
-                                                    </Col>
-
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Starting Price
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.startingPrice}
-                                                    </Col>
-
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Embarkation Country
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.embarkationCountry}
-                                                    </Col>
-
-                                                    <Col span={24}>
-                                                        <Typography.Title level={5} style={{ margin: 0 }}>
-                                                            Disembarkation Country
-                                                        </Typography.Title>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        {destination.disEmbarkationCountry}
-                                                    </Col>
-                                                </Row>
-                                            </Card>
+                                        <Col span={24}>
+                                            {destination.voyageRegion}
                                         </Col>
-                                    )
-                                })
-                            }
+
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Nigths
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.nights}
+                                        </Col>
 
 
-                            <Col span={24} >
-                                <Typography.Title level={4} style={{ margin: 0 }}>
-                                    All
-                                </Typography.Title>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Starting Price
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.startingPrice}
+                                        </Col>
+
+
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Embarkation Country
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.embarkationCountry}
+                                        </Col>
+
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Disembarkation Country
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.disEmbarkationCountry}
+                                        </Col>
+                                    </Row>
+                                </Card>
                             </Col>
+                        )
+                    })
+                }
 
 
-                            {
-                                data?.map((destination, index) => (
-                                    <Col span={6} key={index} style={{ padding: '0 12px' }}>
-                                        <Card title={<Button
-                                            type="text"
-                                            block
-                                            onClick={() => {
-                                                // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
-                                                void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
-                                                    console.error('Error putting event:', error);
-                                                }).then(() => {
-                                                    router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                                })
-                                                // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
-                                            }}
-                                        >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
-                                            <Row gutter={16}>
-                                                <Col span={24}>
-                                                    <Typography.Title level={5} style={{ margin: 0 }}>
-                                                        Region
-                                                    </Typography.Title>
-                                                </Col>
-                                                <Col span={24}>
-                                                    {destination.voyageRegion}
-                                                </Col>
+                <Col span={24} >
+                    <Typography.Title level={4} style={{ margin: 0 }}>
+                        Most Viewed
+                    </Typography.Title>
+                </Col>
 
-                                                <Col span={24}>
-                                                    <Typography.Title level={5} style={{ margin: 0 }}>
-                                                        Nigths
-                                                    </Typography.Title>
-                                                </Col>
-                                                <Col span={24}>
-                                                    {destination.nights}
-                                                </Col>
+                {
+                    mostViewed?.map((destinationId, index) => {
+                        const destination = data?.find(dest => dest.id === destinationId);
+                        if (!destination) return null; // Skip if destination not found
+                        return (
+                            <Col span={6} key={index} style={{ padding: '0 12px' }}>
+                                <Card title={<Button
+                                    type="text"
+                                    block
+                                    onClick={() => {
+                                        // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
+                                        void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
+                                            console.error('Error putting event:', error);
+                                        }).then(() => {
+                                            router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                        })
+                                        // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                    }}
+                                >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
+                                    <Row gutter={16}>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Region
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.voyageRegion}
+                                        </Col>
+
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Nigths
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.nights}
+                                        </Col>
 
 
-                                                <Col span={24}>
-                                                    <Typography.Title level={5} style={{ margin: 0 }}>
-                                                        Starting Price
-                                                    </Typography.Title>
-                                                </Col>
-                                                <Col span={24}>
-                                                    {destination.startingPrice}
-                                                </Col>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Starting Price
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.startingPrice}
+                                        </Col>
 
 
-                                                <Col span={24}>
-                                                    <Typography.Title level={5} style={{ margin: 0 }}>
-                                                        Embarkation Country
-                                                    </Typography.Title>
-                                                </Col>
-                                                <Col span={24}>
-                                                    {destination.embarkationCountry}
-                                                </Col>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Embarkation Country
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.embarkationCountry}
+                                        </Col>
 
-                                                <Col span={24}>
-                                                    <Typography.Title level={5} style={{ margin: 0 }}>
-                                                        Disembarkation Country
-                                                    </Typography.Title>
-                                                </Col>
-                                                <Col span={24}>
-                                                    {destination.disEmbarkationCountry}
-                                                </Col>
-                                            </Row>
-                                        </Card>
+                                        <Col span={24}>
+                                            <Typography.Title level={5} style={{ margin: 0 }}>
+                                                Disembarkation Country
+                                            </Typography.Title>
+                                        </Col>
+                                        <Col span={24}>
+                                            {destination.disEmbarkationCountry}
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        )
+                    })
+                }
+
+
+                <Col span={24} >
+                    <Typography.Title level={4} style={{ margin: 0 }}>
+                        All
+                    </Typography.Title>
+                </Col>
+
+
+                {
+                    data?.map((destination, index) => (
+                        <Col span={6} key={index} style={{ padding: '0 12px' }}>
+                            <Card title={<Button
+                                type="text"
+                                block
+                                onClick={() => {
+                                    // const putEvent = async (userId: string, sessionId: string, eventType: string, itemId: string) => {
+                                    void putEvent(sessionData?.user.id ?? '', sessionData?.id ?? '', 'view', destination.id).catch((error) => {
+                                        console.error('Error putting event:', error);
+                                    }).then(() => {
+                                        router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                    })
+                                    // router.push(`/route/yatch/${id}/destination/${destination.id}/details`)
+                                }}
+                            >{destination.name}</Button>} variant="borderless" style={{ width: '100%' }}>
+                                <Row gutter={16}>
+                                    <Col span={24}>
+                                        <Typography.Title level={5} style={{ margin: 0 }}>
+                                            Region
+                                        </Typography.Title>
                                     </Col>
-                                ))
-                            }
-                            <Col span={8} style={{ padding: '0 12px' }}>
-                                <Tooltip title="search">
-                                    <Button
-                                        shape="circle"
-                                        icon={<PlusOutlined />}
-                                        onClick={showDrawer}
-                                    />
-                                </Tooltip>
-                            </Col>
-                        </Row>
-                        {/* <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content> */}
-                    </Layout>
-                </Content>
-            </Layout>
+                                    <Col span={24}>
+                                        {destination.voyageRegion}
+                                    </Col>
+
+                                    <Col span={24}>
+                                        <Typography.Title level={5} style={{ margin: 0 }}>
+                                            Nigths
+                                        </Typography.Title>
+                                    </Col>
+                                    <Col span={24}>
+                                        {destination.nights}
+                                    </Col>
+
+
+                                    <Col span={24}>
+                                        <Typography.Title level={5} style={{ margin: 0 }}>
+                                            Starting Price
+                                        </Typography.Title>
+                                    </Col>
+                                    <Col span={24}>
+                                        {destination.startingPrice}
+                                    </Col>
+
+
+                                    <Col span={24}>
+                                        <Typography.Title level={5} style={{ margin: 0 }}>
+                                            Embarkation Country
+                                        </Typography.Title>
+                                    </Col>
+                                    <Col span={24}>
+                                        {destination.embarkationCountry}
+                                    </Col>
+
+                                    <Col span={24}>
+                                        <Typography.Title level={5} style={{ margin: 0 }}>
+                                            Disembarkation Country
+                                        </Typography.Title>
+                                    </Col>
+                                    <Col span={24}>
+                                        {destination.disEmbarkationCountry}
+                                    </Col>
+                                </Row>
+                            </Card>
+                        </Col>
+                    ))
+                }
+                <Col span={8} style={{ padding: '0 12px' }}>
+                    <Tooltip title="search">
+                        <Button
+                            shape="circle"
+                            icon={<PlusOutlined />}
+                            onClick={showDrawer}
+                        />
+                    </Tooltip>
+                </Col>
+            </Row>
             <Drawer
                 title="Create Yatch"
                 closable={{ 'aria-label': 'Close Button' }}

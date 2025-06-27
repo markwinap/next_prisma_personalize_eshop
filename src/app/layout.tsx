@@ -28,9 +28,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode, session: never }>) {
 
   return (
-    <html lang="en"
-    >
-      <body >
+    <html lang="en" style={{ height: "100%", width: "100%" }} >
+      <body style={{ height: "100%", width: "100%" }}>
         <AntdRegistry>
             <SessionProvider session={session}>
               <TRPCReactProvider>
